@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Card, { type CardProps } from "./components/Card";
+import CardSearch from "./components/CardSearch";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const blueEyes: CardProps = {
+    name: "D/D/D/D Great Dimension King Arc Crisis",
+    attributeIcon: "DARK",
+    level: 12,
+    imageUrl: "dmm.png",
+    typeLine: "Dragón/Efecto",
+    description:
+      "Esta carta es siempre tratada como una 'Millennium card'. Puedes descartarla para añadir 'Millennium Ankh'...",
+    atk: 3000,
+    def: 2500,
+    setCode: "ROTA-EN004",
+    edition: "1st Edition",
+    frameType: "unity",
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <CardSearch />
+      <div className="flex">
+        <Card {...blueEyes} />
+        <div className="w-auto">
+          <img src="/LUNGO.png" alt="pepe" className="w-85 h-auto object-contain" />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="w-auto">
+          <img src="/LUNGO.png" alt="pepe" className="w-85 h-auto object-contain" />
+        </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
