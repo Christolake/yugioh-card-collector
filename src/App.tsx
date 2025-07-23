@@ -6,28 +6,28 @@ function App() {
     name: "D/D/D/D Great Dimension King Arc Crisis",
     attributeIcon: "DARK",
     level: 12,
-    imageUrl: "dmm.png",
-    typeLine: "Dragón/Efecto",
+    imageUrl: "dddd.png",
+    typeLine: "Fiend/Pendulum/Effect",
     description:
       "Esta carta es siempre tratada como una 'Millennium card'. Puedes descartarla para añadir 'Millennium Ankh'...",
     atk: 3000,
     def: 2500,
     setCode: "ROTA-EN004",
     edition: "1st Edition",
-    frameType: "unity",
+    frameType: "ritual_pendulum",
   };
 
   return (
     <>
-    <CardSearch />
+    {/* <CardSearch /> */}
       <div className="flex">
         <Card {...blueEyes} />
         <div className="w-auto">
-          <img src="/LUNGO.png" alt="pepe" className="w-85 h-auto object-contain" />
+          <img src="/unity.webp" alt="pepe" className="w-85 h-auto object-contain" />
         </div>
       </div>
       <div className="w-auto">
-          <img src="/LUNGO.png" alt="pepe" className="w-85 h-auto object-contain" />
+          <img src="/chuchi.webp" alt="pepe" className="w-85 h-auto object-contain" />
         </div>
     </>
   );

@@ -1,4 +1,14 @@
 @import "tailwindcss";
 @theme {
-    --border-outset: 'border-style: outset';
+    --color-token: oklch(57.5% 0.0 0);
+    --color-normal: oklch(72.5% 0.10 80);
+    --color-effect: oklch(62.5% 0.125 45);
+    --color-ritual: oklch(55% 0.125 250);
+    --color-fusion: oklch(52.5% 0.120 295);
+    --color-synchro: oklch(85% 0 270);
+    --color-xyz: oklch(20% 0.04 220);
+    --color-link: oklch(52.5% 0.15 265);
+    --color-spell: oklch(57.5% 0.125 190);
+    --color-trap: oklch(55% 0.15 350);
+    --color-dark_synchro: oklch(42.5% 0.025 60);
 }

@@ -1,8 +1,13 @@
 import { FitText } from "../hooks/useFitText";
 import LevelStars from "./LevelStars";
+import texture2 from "../assets/texture2.png"; // Import the texture image
 import texture from "../assets/texture.png"; // Import the texture image
+import texture3 from "../assets/texture3.png"; // Import the texture image
+import xyz from "../assets/xyzTexture.png"; // Import the texture image
+import link from "../assets/linkTexture.png"; // Import the texture image
 import isItPendulum from "../utils/isItPendulum";
 import Artwork from "./Artwork";
+import LoreBox from "./LoreBox";
 
 const isUnityMonster = (frameType: string) =>
   frameType == "unity"
@@ -24,6 +29,16 @@ const isPendulumMonster = (frameType: string): string => {
   return `, linear-gradient(to bottom, ${topColor} 40%, ${bottomColor} 60%)`;
 };
 
+const isXyzMonster = (frameType: string): string|undefined => {
+  if (frameType.includes("xyz"))
+    return `, url(${xyz})`;
+};
+
+const isLinkMonster = (frameType: string): string|undefined => {
+  if (frameType.includes("link")) 
+    return `, url(${link})`;
+};
+
 const getFrameBase = (frameType: string): keyof typeof frameMap => {
   // Si termina en _pendulum, extraemos la parte de antes
   const base = frameType.endsWith("_pendulum")
@@ -35,17 +50,18 @@ const getFrameBase = (frameType: string): keyof typeof frameMap => {
 };
 
 const frameMap = {
-  normal: "rgb(218,171,31)",
-  effect: "rgb(186,98,45)",
-  ritual: "rgb(21,105,190)",
-  fusion: "rgb(148,0,211)",
-  synchro: "rgb(220,220,220)",
-  xyz: "rgb(0,10,15)",
-  link: "rgb(21,35,190)",
-  spell: "rgb(29 150 146)",
-  trap: "rgb(212,104,156)",
-  dark_synchro: "rgb(40,30,20)",
-  unity: "rgb(128,128,128)",
+  token: "oklch(57.5% 0 0)",
+  normal: "oklch(72.5% 0.10 80)",
+  effect: "oklch(62.5% 0.125 45)",
+  ritual: "oklch(55% 0.125 250)",
+  fusion: "oklch(52.5% 0.120 295)",
+  synchro: "oklch(85% 0 270)",
+  xyz: "oklch(20% 0.04 220)",
+  link: "oklch(52.5% 0.15 265)",
+  spell: "oklch(57.5% 0.125 190)",
+  trap: "oklch(55% 0.15 350)",
+  dark_synchro: "oklch(42.5% 0.025 60)",
+  unity: "oklch(57.5% 0 0)",
 };
 
 type FrameType = keyof typeof frameMap | `${keyof typeof frameMap}_pendulum`;
@@ -135,7 +151,7 @@ const Card: React.FC<CardProps> = ({
   frameType,
 }) => {
   const baseFrame = getFrameBase(frameType);
-  const bgColor = frameMap[baseFrame];
+  const bgColor = frameMap[baseFrame]||frameMap.token;
   const borderColor = lightenRgb(frameMap[baseFrame], 30);
 
   return (
@@ -156,9 +172,9 @@ const Card: React.FC<CardProps> = ({
             isItPendulum(frameType) ? frameMap.unity : borderColor
           }`,
           borderStyle: "outset",
-          backgroundImage: `url(${texture})${isPendulumMonster(
-            frameType
-          )}${isUnityMonster(frameType)}`,
+          backgroundImage: `url(${texture2})
+          ${isPendulumMonster(frameType)}
+          ${isUnityMonster(frameType)}`,
           backgroundBlendMode: "hard-light",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -202,36 +218,22 @@ const Card: React.FC<CardProps> = ({
           </div>
         </div>
         <div className="flex justify-center items-start">
+          {/* 🎨 Arte de la Carta */}
 
-        {/* 🎨 Arte de la Carta */}
-
-        <div className=" h-67 relative flex justify-center w-full">
-          <Artwork name={name} frame={frameType} image={imageUrl} />
-        </div>
-        </div>
-
-          {/* Pie: Set Code & Edición */}
-
-          <div className="flex w-67 justify-between items-center text-[0.5rem] mx-auto text-black">
-            <span>{edition}</span>
-            <span>{setCode}</span>
+          <div className=" h-67 relative flex justify-center w-full">
+            <Artwork name={name} frame={frameType} image={imageUrl} />
           </div>
-        <div className="flex flex-col gap-0.5">
+        </div>
 
-          {/* Caja de Texto */}
-          <div className="bg-white/75 h-24 border-3 z-10 shadow-[0_0_0.5rem_rgba(0,0,0,1),0_0_0.25rem_rgba(0,0,0,0.1)] border-amber-600 p-0.5 text-[10px] leading-tight overflow-y-auto">
-            <p className="font-bold uppercase mb-1">{"[" + typeLine + "]"}</p>
-            <p>{description}</p>
+        {/* Pie: Set Code & Edición */}
 
-            {/* Línea Divisoria */}
-            <div className="h-px bg-black my-1 mx-2" />
+        <div className="flex w-67 justify-between items-center text-[0.5rem] mx-auto text-black">
+          <span>{edition}</span>
+          <span>{setCode}</span>
+        </div>
 
-            {/* ATK / DEF */}
-            <div className="flex justify-end items-baseline space-x-4 px-2 text-[12px] font-bold uppercase">
-              <span>ATK/{atk}</span>
-              <span>DEF/{def}</span>
-            </div>
-          </div>
+        <LoreBox description={description} typeLine={typeLine} atk={atk} def={def} frameType={frameType}/>
+        
           {/*Edition and Copyright*/}
           <div className="flex relative translate-y-0.75 h-2 w-75 justify-between items-center text-[0.5rem] mx-auto text-black">
             <span>0123456789</span>
@@ -240,7 +242,6 @@ const Card: React.FC<CardProps> = ({
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

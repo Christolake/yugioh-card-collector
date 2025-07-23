@@ -12,6 +12,10 @@ const Artwork = ({name, frame, image}:{name:string, frame:string, image:string|u
         borderLeftStyle: "outset",
         borderRightStyle: "outset",
         borderBottomStyle: "none",
+        WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+    maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+    WebkitMaskRepeat: 'no-repeat',
+    maskRepeat: 'no-repeat',
       };
     }
     return {
