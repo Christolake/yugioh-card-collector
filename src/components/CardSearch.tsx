@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Card from "./Card";
-import type { AttributeType } from "./Card";
-import type { CardProps } from "./Card";
+import type { AttributeType } from "../types/AttributeType";
+import type { CardProps } from "../types/CardProps";
 
 // 🎯 Función para aplicar el efecto de tilt
 const handleCardTilt = (
@@ -68,18 +68,32 @@ const CardSearch = () => {
   };
 
   const parseCardData = (apiCard: any): CardProps => {
+
+    console.log(apiCard)
+
     return {
+      id: apiCard.id,
       name: apiCard.name,
-      attributeIcon: (apiCard.attribute || "LAUGH") as AttributeType,
-      level: apiCard.level || 0,
+      type: apiCard.type,
+      typeline: apiCard.typeline,
+      frameType: apiCard.frameType || "token",
+      desc: apiCard.desc,
+      race: apiCard.race,
+      atk: apiCard.atk,
+      def: apiCard.def,
+      level: apiCard.level,
+      attribute: (
+  apiCard.attribute ||
+  (["Spell Card", "Trap Card", "Skill Card"].includes(apiCard.type)
+    ? apiCard.type.split(" ")[0].toUpperCase()
+    : undefined)
+) as AttributeType | undefined,
+      linkval: apiCard.linkval,
+      linkmarkers: apiCard.linkmarkers,
+      scale: apiCard.scale,
       imageUrl: apiCard.card_images[0].image_url_cropped||apiCard.card_images[0].image_url,
-      typeLine: apiCard.type,
-      description: apiCard.desc,
-      atk: apiCard.atk ?? 0,
-      def: apiCard.def ?? 0,
       setCode: apiCard.card_sets?.[0]?.set_code ?? "",
       edition: apiCard.card_sets?.[0]?.set_rarity ?? "",
-      frameType: apiCard.frameType || "effect",
     };
   };
 

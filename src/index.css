@@ -27,7 +27,25 @@
   src: url('./assets/fonts/matrixIIOTreg.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-stretch: 100%;
 }
+
+@font-face {
+  font-family: 'MatrixII';
+  src: url('./assets/fonts/matrixIIOTseminarrow.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: 60%;
+}
+
+@font-face {
+  font-family: 'MatrixII';
+  src: url('./assets/fonts/matrixIIOTnarrow.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: 40%;
+}
+
 @font-face {
   font-family: 'MatrixII';
   src: url('./assets/fonts/matrixIIOTbook.woff2') format('woff2');

@@ -2,7 +2,7 @@ const LevelStars = ({
   level,
   frameType,
 }: {
-  level: number;
+  level: number | undefined;
   frameType: string;
 }) => {
   let bg = "bg-orange-600";

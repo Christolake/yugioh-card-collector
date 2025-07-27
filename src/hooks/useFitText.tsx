@@ -36,10 +36,10 @@ export const FitText: React.FC<FitTextProps> = ({ text, className }) => {
   }, []);
 
   return (
-    <div className={`${className ?? ''} w-full h-6 overflow-hidden flex items-center`}>
+    <div className={`${className ?? ''} w-full overflow-hidden flex items-center`}>
       <div
         ref={ref}
-        className="whitespace-nowrap origin-left transform -translate-y-0.5 leading-none"
+        className="whitespace-nowrap origin-left transform leading-none"
         style={{
           transform: `scaleX(${scale})`,
           transformOrigin: 'left',
