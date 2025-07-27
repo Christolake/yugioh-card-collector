@@ -1,18 +1,21 @@
 import { FitText } from "../hooks/useFitText";
 import LevelStars from "./LevelStars";
 import texture2 from "../assets/texture2.png"; // Import the texture image
-import texture from "../assets/texture.png"; // Import the texture image
-import texture3 from "../assets/texture3.png"; // Import the texture image
-import xyz from "../assets/xyzTexture.png"; // Import the texture image
-import link from "../assets/linkTexture.png"; // Import the texture image
 import isItPendulum from "../utils/isItPendulum";
 import Artwork from "./Artwork";
 import LoreBox from "./LoreBox";
+
+import attributeMap from "../utils/attributeMap";
+
+import type { CardProps } from "../types/CardProps";
+import { SpellTrapSymbol } from "./SpellTrapSymbol";
 
 const isUnityMonster = (frameType: string) =>
   frameType == "unity"
     ? `, conic-gradient(from -90deg, ${frameMap.spell}, ${frameMap.effect} 10deg 65deg, ${frameMap.fusion} 67.5deg 87.5deg, ${frameMap.synchro} 90deg 113deg, ${frameMap.xyz} 115.5deg 170deg, ${frameMap.spell} 180deg 270deg)`
     : "";
+
+    const whiteText:string[] = ['spell','trap','skill','xyz','link']
 
 const isPendulumMonster = (frameType: string): string => {
   if (frameType.includes("unity")) return "";
@@ -27,16 +30,6 @@ const isPendulumMonster = (frameType: string): string => {
   const bottomColor = frameMap.spell;
 
   return `, linear-gradient(to bottom, ${topColor} 40%, ${bottomColor} 60%)`;
-};
-
-const isXyzMonster = (frameType: string): string|undefined => {
-  if (frameType.includes("xyz"))
-    return `, url(${xyz})`;
-};
-
-const isLinkMonster = (frameType: string): string|undefined => {
-  if (frameType.includes("link")) 
-    return `, url(${link})`;
 };
 
 const getFrameBase = (frameType: string): keyof typeof frameMap => {
@@ -64,70 +57,6 @@ const frameMap = {
   unity: "oklch(57.5% 0 0)",
 };
 
-type FrameType = keyof typeof frameMap | `${keyof typeof frameMap}_pendulum`;
-export type AttributeType = keyof typeof attributeMap;
-
-const attributeMap = {
-  LIGHT: {
-    kanji: `光`,
-    color: `#fbbf24`, // amber-400
-  },
-  DARK: {
-    kanji: `闇`,
-    color: `#a855f7`, // purple-400
-  },
-  WATER: {
-    kanji: `水`,
-    color: `#38bdf8`, // sky-400
-  },
-  FIRE: {
-    kanji: `炎`,
-    color: `#f87171`, // red-400
-  },
-  EARTH: {
-    kanji: `地`,
-    color: `#a16207`, // brown-400 (aproximado)
-  },
-  WIND: {
-    kanji: `風`,
-    color: `#4ade80`, // green-400
-  },
-  DIVINE: {
-    kanji: `神`,
-    color: `#fbbf24`,
-  },
-  LAUGH: {
-    kanji: `笑`,
-    color: `#fb923c`, // orange-400
-  },
-  SPELL: {
-    kanji: `魔`,
-    color: `#14b8a6`, // teal-400
-  },
-  TRAP: {
-    kanji: `罠`,
-    color: `#c084fc`, // purple-400
-  },
-  SKILL: {
-    kanji: `✦`,
-    color: `#fde047`, // yellow-400
-  },
-};
-
-export interface CardProps {
-  name: string;
-  attributeIcon: AttributeType;
-  level: number;
-  imageUrl?: string;
-  typeLine: string;
-  description: string;
-  atk: number;
-  def: number;
-  setCode?: string;
-  edition?: string;
-  frameType: string;
-}
-
 const lightenRgb = (rgbStr: string, amount = 0) => {
   const match = rgbStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
   if (!match) return rgbStr;
@@ -138,22 +67,29 @@ const lightenRgb = (rgbStr: string, amount = 0) => {
 };
 
 const Card: React.FC<CardProps> = ({
+  id,
   name,
-  attributeIcon,
-  level,
-  imageUrl,
-  typeLine,
-  description,
+  type,
+  typeline,
+  frameType,
+  desc,
+  race,
   atk,
   def,
+  level,
+  attribute,
+  linkval,
+  linkmarkers,
+  scale,
+  imageUrl,
   setCode,
   edition,
-  frameType,
 }) => {
   const baseFrame = getFrameBase(frameType);
   const bgColor = frameMap[baseFrame]||frameMap.token;
   const borderColor = lightenRgb(frameMap[baseFrame], 30);
 
+  console.log(typeline)
   return (
     // ✅ Primera capa: fondo oscuro, sin borde
     <div
@@ -187,23 +123,24 @@ const Card: React.FC<CardProps> = ({
             style={{
               borderStyle: "outset",
               borderColor: borderColor,
+              color: whiteText.includes(frameType) ? 'white' : 'black'
             }}
           >
             <FitText
               id="name"
               text={name}
-              className="h-full flex items-center leading-none font-semibold text-2xl [font-variant-caps:small-caps]"
+              className="h-full flex items-center leading-none font-normal text-2xl font-[MatrixII] [font-variant-caps:small-caps]"
             />
             <div
               id="attribute"
-              className="h-full aspect-square rounded-full flex flex-col text-white justify-center items-center"
+              className="h-full relative aspect-square rounded-full flex flex-col text-white justify-center items-center"
               style={{
-                backgroundColor: attributeMap[attributeIcon].color,
+                backgroundColor: attributeMap[attribute].color,
               }}
             >
-              <span className="text-[0.5rem] font-bold">{attributeIcon}</span>
-              <span className="text-xl -translate-y-1.5">
-                {attributeMap[attributeIcon].kanji}
+              <span className="text-[0.5rem] -translate-y-3 ">{attribute}</span>
+              <span className="absolute text-[1.625rem] translate-y-0.25 flex justify-center items-center font-[DFLeiSho]">
+                {attributeMap[attribute].kanji}
               </span>
             </div>
           </div>
@@ -213,7 +150,14 @@ const Card: React.FC<CardProps> = ({
             className="relative w-full h-7 mx-auto flex justify-center items-center"
           >
             <div className="absolute flex justify-end items-center text-2xl">
-              <LevelStars level={level} frameType={frameType} />
+              {level && (<LevelStars level={level} frameType={frameType} />)}
+              {(frameType === 'spell' || frameType === 'trap') && 
+                (<div className="font-bold text-[1rem] flex items-center justify-end [font-variant-caps:small-caps] w-67">
+                  <span>[ </span>
+                  <span>{type}</span>
+                  {race != 'Normal' && (<SpellTrapSymbol type={race} />)}
+                  <span> ]</span>
+                </div>)}
             </div>
           </div>
         </div>
@@ -232,12 +176,18 @@ const Card: React.FC<CardProps> = ({
           <span>{setCode}</span>
         </div>
 
-        <LoreBox description={description} typeLine={typeLine} atk={atk} def={def} frameType={frameType}/>
+        <LoreBox 
+        description={desc} 
+        typeline={typeline} 
+        atk={atk} def={def} 
+        frameType={frameType} 
+        scale={scale}
+        linkval={linkval}
+        linkmarkers={linkmarkers}/>
         
           {/*Edition and Copyright*/}
           <div className="flex relative translate-y-0.75 h-2 w-75 justify-between items-center text-[0.5rem] mx-auto text-black">
-            <span>0123456789</span>
-            <span>{edition}</span>
+            <span>{id}</span>
             <span>©2020 Studio Dice/SHUEISHA, TV TOKYO, KONAMI</span>
           </div>
         </div>

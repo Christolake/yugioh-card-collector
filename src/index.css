@@ -10,5 +10,40 @@
     --color-link: oklch(52.5% 0.15 265);
     --color-spell: oklch(57.5% 0.125 190);
     --color-trap: oklch(55% 0.15 350);
+    --color-osiris: oklch(42.5% 0.025 60);
+    --color-obelisk: oklch(42.5% 0.025 60);
+    --color-ra: oklch(42.5% 0.025 60);
     --color-dark_synchro: oklch(42.5% 0.025 60);
+    --color-skill: oklch(42.5% 0.025 60);
+}
+@font-face {
+  font-family: 'DFLeiSho';
+  src: url('./assets/fonts/dfleisho.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'MatrixII';
+  src: url('./assets/fonts/matrixIIOTreg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'MatrixII';
+  src: url('./assets/fonts/matrixIIOTbook.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'MatrixII';
+  src: url('./assets/fonts/matrixIIOTbold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@layer base {
+  html {
+    font-family: 'MatrixII', ui-sans-serif, system-ui;
+    font-weight: 300;
+  }
 }
