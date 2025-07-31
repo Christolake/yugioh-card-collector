@@ -15,7 +15,7 @@ const isUnityMonster = (frameType: string) =>
     ? `, conic-gradient(from -90deg, ${frameMap.spell}, ${frameMap.effect} 10deg 65deg, ${frameMap.fusion} 67.5deg 87.5deg, ${frameMap.synchro} 90deg 113deg, ${frameMap.xyz} 115.5deg 170deg, ${frameMap.spell} 180deg 270deg)`
     : "";
 
-    const whiteText:string[] = ['spell','trap','skill','xyz','link']
+    const whiteText:string[] = ['spell','trap','skill','xyz','link', 'xyz_pendulum']
 
 const isPendulumMonster = (frameType: string): string => {
   if (frameType.includes("unity")) return "";

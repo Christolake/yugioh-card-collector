@@ -35,7 +35,7 @@
   src: url('./assets/fonts/matrixIIOTseminarrow.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-stretch: 60%;
+  font-stretch: 87.5%;
 }
 
 @font-face {
@@ -43,7 +43,7 @@
   src: url('./assets/fonts/matrixIIOTnarrow.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-stretch: 40%;
+  font-stretch: 75%;
 }
 
 @font-face {
