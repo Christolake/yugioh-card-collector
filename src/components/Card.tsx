@@ -9,6 +9,7 @@ import attributeMap from "../utils/attributeMap";
 
 import type { CardProps } from "../types/CardProps";
 import { SpellTrapSymbol } from "./SpellTrapSymbol";
+import Attribute from "./Attribute";
 
 const isUnityMonster = (frameType: string) =>
   frameType == "unity"
@@ -57,14 +58,33 @@ const frameMap = {
   unity: "oklch(57.5% 0 0)",
 };
 
-const lightenRgb = (rgbStr: string, amount = 0) => {
-  const match = rgbStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-  if (!match) return rgbStr;
-  const r = Math.min(255, parseInt(match[1]) + amount);
-  const g = Math.min(255, parseInt(match[2]) + amount);
-  const b = Math.min(255, parseInt(match[3]) + amount);
-  return `rgb(${r},${g},${b})`;
-};
+const lightenOklchColor = (color: string, increase: number): string => {
+  // Match lightness with %, chroma, hue, and optional alpha
+  const regex = /oklch\(\s*([\d.]+)%\s+([\d.]+)\s+([\d.]+)(deg)?(?:\s*\/\s*([\d.]+))?\s*\)/i;
+  const match = color.match(regex);
+
+  if (!match) {
+    console.error("Failed to parse OKLCH color:", color);
+    throw new Error("Invalid OKLCH color format");
+  }
+
+  const [_, lStr, cStr, hStr, degFlag, aStr] = match;
+
+  let l = parseFloat(lStr);
+  const c = parseFloat(cStr);
+  const h = parseFloat(hStr);
+  const a = aStr ? parseFloat(aStr) : undefined;
+
+  // Increase lightness, cap at 100%
+  l = Math.min(l + increase, 100);
+
+  const hFormatted = degFlag ? `${h}deg` : h;
+
+  // Rebuild the color string with percentage
+  return a !== undefined
+    ? `oklch(${l}% ${c} ${hFormatted} / ${a})`
+    : `oklch(${l}% ${c} ${hFormatted})`;
+}
 
 const Card: React.FC<CardProps> = ({
   id,
@@ -87,7 +107,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const baseFrame = getFrameBase(frameType);
   const bgColor = frameMap[baseFrame]||frameMap.token;
-  const borderColor = lightenRgb(frameMap[baseFrame], 30);
+  const borderColor = lightenOklchColor(frameMap[baseFrame], 10);
 
   console.log(typeline)
   return (
@@ -131,18 +151,8 @@ const Card: React.FC<CardProps> = ({
               text={name}
               className="h-full flex items-center leading-none font-normal text-2xl font-[MatrixII] [font-variant-caps:small-caps]"
             />
-            <div
-              id="attribute"
-              className="h-full relative aspect-square rounded-full flex flex-col text-white justify-center items-center"
-              style={{
-                backgroundColor: attributeMap[attribute].color,
-              }}
-            >
-              <span className="text-[0.5rem] -translate-y-3 ">{attribute}</span>
-              <span className="absolute text-[1.625rem] translate-y-0.25 flex justify-center items-center font-[DFLeiSho]">
-                {attributeMap[attribute].kanji}
-              </span>
-            </div>
+            
+            <Attribute attribute={attribute} miniText className="text-[1.625rem]" />
           </div>
 
           <div

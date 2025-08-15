@@ -1,6 +1,7 @@
 import Card from "./components/Card";
 import type { CardProps } from "./types/CardProps";
 import CardSearch from "./components/CardSearch";
+import Binder from "./components/Binder";
 
 function App() {
   const blueEyes: CardProps = {
@@ -26,14 +27,21 @@ function App() {
     <>
     <CardSearch />
       <div className="flex">
-        <Card {...blueEyes} />
-        <div className="w-auto">
+        <div className="w-full flex justify-center">
+
+
+          <Binder />
+
+        </div>
+        {/* <Card {...blueEyes} /> */}
+        {/* <div className="w-auto">
           <img src="/chuchi.webp" alt="pepe" className="w-85 h-auto object-contain" />
         </div>
       </div>
       <div className="w-auto">
-          <img src="/chuchi.webp" alt="pepe" className="w-85 h-auto object-contain" />
+          <img src="/chuchi.webp" alt="pepe" className="w-85 h-auto object-contain" /> */}
         </div>
+        {/* <FoilCardArt src='dmm.png' applyFoil /> */}
     </>
   );
 }

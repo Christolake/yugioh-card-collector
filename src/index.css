@@ -65,3 +65,33 @@
     font-weight: 300;
   }
 }
+
+@keyframes foilRainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.animate-foilRainbow {
+  animation: foilRainbow 4s linear infinite;
+}
+
+/* Set your base frame color on the element as --frame */
+.ygo-cloud {
+  --frame: oklch(62.5% 0.125 45); /* example: Effect frame; replace per card */
+
+  /* Layered cloudy gradients + the solid base color at the bottom */
+  background-image:
+    radial-gradient(120% 95% at 15% 10%,  rgba(255,255,255,.07) 0 28%, transparent 60%),
+    radial-gradient(90% 70%  at 75% 8%,   rgba(255,255,255,.06) 0 26%, transparent 62%),
+    radial-gradient(80% 60%  at 90% 40%,  rgba(255,255,255,.055) 0 25%, transparent 65%),
+    radial-gradient(75% 75%  at 12% 78%,  rgba(255,255,255,.06) 0 30%, transparent 63%),
+    radial-gradient(95% 85%  at 60% 55%,  rgba(0,0,0,.05)      0 24%, transparent 66%),
+    radial-gradient(70% 70%  at 45% 92%,  rgba(255,255,255,.045) 0 30%, transparent 68%),
+    radial-gradient(110% 90% at 55% 30%,  rgba(255,255,255,.05) 0 35%, transparent 70%),
+    linear-gradient(var(--frame), var(--frame));
+  background-blend-mode:
+    soft-light, soft-light, soft-light, soft-light,
+    soft-light, soft-light, soft-light, normal;
+
+  /* Optional “print-like” pop to match cards */
+  filter: contrast(1.02) saturate(1.05);
+}

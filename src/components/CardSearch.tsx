@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Card from "./Card";
 import type { AttributeType } from "../types/AttributeType";
 import type { CardProps } from "../types/CardProps";
+import { addToBinder, type BinderCard } from "../utils/binder"; // ⬅️ NEW
 
 // 🎯 Función para aplicar el efecto de tilt
 const handleCardTilt = (
@@ -39,6 +40,7 @@ const CardSearch = () => {
   const [selectedCard, setSelectedCard] = useState<CardProps | null>(null);
   const [loading, setLoading] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [toast, setToast] = useState<string | null>(null); // ⬅️ tiny feedback
 
   const fetchCards = async () => {
     if (query.length < 3) return;
@@ -69,8 +71,6 @@ const CardSearch = () => {
 
   const parseCardData = (apiCard: any): CardProps => {
 
-    console.log(apiCard)
-
     return {
       id: apiCard.id,
       name: apiCard.name,
@@ -96,6 +96,12 @@ const CardSearch = () => {
       edition: apiCard.card_sets?.[0]?.set_rarity ?? "",
     };
   };
+
+   const handleAddToBinder = () => {
+  if (!selectedCard) return;
+  const res = addToBinder(selectedCard);  // ⬅️ full CardProps
+  // optional toast
+};
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
@@ -136,31 +142,38 @@ const CardSearch = () => {
       )}
 
       {/* 🎴 Carta seleccionada con efecto 3D */}
-      {selectedCard && (
+       {selectedCard && (
         <div className="mt-6 flex flex-col items-center gap-4">
           <div
             style={{ perspective: "1000px" }}
             onMouseMove={(e) => handleCardTilt(e, cardRef)}
             onMouseLeave={() => resetTilt(cardRef)}
           >
-            <div
-              ref={cardRef}
-              className="transition-transform duration-300 ease-out"
-            >
+            <div ref={cardRef} className="transition-transform duration-300 ease-out">
               <Card {...selectedCard} />
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setSelectedCard(null);
-              setQuery("");
-              setResults([]);
-            }}
-            className="mt-4 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-          >
-            Volver a buscar
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddToBinder}
+              className="px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700"
+            >
+              ADD TO BINDER
+            </button>
+            <button
+              onClick={() => {
+                setSelectedCard(null);
+                setQuery("");
+                setResults([]);
+              }}
+              className="px-4 py-2 rounded-md bg-gray-600 text-white hover:bg-gray-700"
+            >
+              Volver a buscar
+            </button>
+          </div>
+
+          {toast && <p className="text-sm text-gray-700">{toast}</p>}
         </div>
       )}
     </div>
